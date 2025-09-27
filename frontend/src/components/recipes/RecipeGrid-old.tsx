@@ -1,13 +1,41 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { ClockIcon, UserGroupIcon, StarIcon } from '@heroicons/react/24/outline'
+import { Card, CardContent, CardFooter } from '@/components/ui/Card'
+import Button from '@/components/ui/Button'
 import { Recipe } from '@/types'
-import { Clock, Users, ChefHat, Star, BookOpen, Heart } from 'lucide-react'
+import { RecipeFilters } from '@/services/recipeService'
 
 interface RecipeGridProps {
   recipes: Recipe[]
-  loading?: boolean
+  loading: boolean
+  error: string | null
+  meta: {
+    current_page: number
+    last_page: number
+    per_page: number
+    total: number
+  }
+  onFiltersChange: (filters: RecipeFilters) => void
+  currentFilters: RecipeFilters
+}
+
+const getDifficultyLabel = (level: number) => {
+  switch (level) {
+    case 1: return 'Fácil'
+    case 2: return 'Media'
+    case 3: return 'Difícil'
+  }
+}
+
+const getDifficultyColor = (level: number) => {
+  switch (level) {
+    case 1: return 'bg-green-100 text-green-800'
+    case 2: return 'bg-yellow-100 text-yellow-800'
+    case 3: return 'bg-red-100 text-red-800'
+    default: return 'bg-gray-100 text-gray-800'
+  }
 }
 
 export default function RecipeGrid({ recipes, loading }: RecipeGridProps) {
@@ -18,7 +46,7 @@ export default function RecipeGrid({ recipes, loading }: RecipeGridProps) {
     if (selectedDifficulty === 'all') {
       setFilteredRecipes(recipes)
     } else {
-      setFilteredRecipes(recipes.filter(recipe => recipe.difficulty === selectedDifficulty))
+      setFilteredRecipes(recipes.filter(recipe => recipe.difficulty_level === selectedDifficulty))
     }
   }, [recipes, selectedDifficulty])
 
@@ -47,9 +75,9 @@ export default function RecipeGrid({ recipes, loading }: RecipeGridProps) {
           Todas las Recetas
         </button>
         <button
-          onClick={() => setSelectedDifficulty('Fácil')}
+          onClick={() => setSelectedDifficulty('1')}
           className={`px-6 py-2 rounded-lg font-medium transition-all ${
-            selectedDifficulty === 'Fácil'
+            selectedDifficulty === '1'
               ? 'bg-success text-white shadow-soft'
               : 'bg-white text-neutral-700 hover:bg-neutral-50 border border-neutral-200'
           }`}
@@ -60,9 +88,9 @@ export default function RecipeGrid({ recipes, loading }: RecipeGridProps) {
           </span>
         </button>
         <button
-          onClick={() => setSelectedDifficulty('Medio')}
+          onClick={() => setSelectedDifficulty('2')}
           className={`px-6 py-2 rounded-lg font-medium transition-all ${
-            selectedDifficulty === 'Medio'
+            selectedDifficulty === '2'
               ? 'bg-warning text-white shadow-soft'
               : 'bg-white text-neutral-700 hover:bg-neutral-50 border border-neutral-200'
           }`}
@@ -73,9 +101,9 @@ export default function RecipeGrid({ recipes, loading }: RecipeGridProps) {
           </span>
         </button>
         <button
-          onClick={() => setSelectedDifficulty('Difícil')}
+          onClick={() => setSelectedDifficulty('3')}
           className={`px-6 py-2 rounded-lg font-medium transition-all ${
-            selectedDifficulty === 'Difícil'
+            selectedDifficulty === '3'
               ? 'bg-error text-white shadow-soft'
               : 'bg-white text-neutral-700 hover:bg-neutral-50 border border-neutral-200'
           }`}
@@ -114,8 +142,8 @@ export default function RecipeGrid({ recipes, loading }: RecipeGridProps) {
                 
                 {/* Difficulty Badge */}
                 <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-white text-sm font-semibold ${
-                  recipe.difficulty === 'Fácil' ? 'bg-success' :
-                  recipe.difficulty === 'Medio' ? 'bg-warning' :
+                  recipe.difficulty_level === 1 ? 'bg-success' :
+                  recipe.difficulty_level === 2 ? 'bg-warning' :
                   'bg-error'
                 }`}>
                   {recipe.difficulty}
@@ -175,16 +203,28 @@ export default function RecipeGrid({ recipes, loading }: RecipeGridProps) {
         ))}
       </div>
 
-      {filteredRecipes.length === 0 && (
-        <div className="text-center py-16 bg-neutral-50 rounded-xl">
-          <ChefHat className="h-16 w-16 text-neutral-300 mx-auto mb-4" />
-          <p className="text-xl text-neutral-600 mb-4">No se encontraron recetas con los filtros seleccionados</p>
-          <button
-            onClick={() => setSelectedDifficulty('all')}
-            className="px-6 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-600 transition-colors"
+      {/* Pagination */}
+      {meta.last_page > 1 && (
+        <div className="flex justify-center items-center space-x-2">
+          <Button
+            variant="outline"
+            onClick={() => handlePageChange(meta.current_page - 1)}
+            disabled={meta.current_page === 1}
           >
-            Ver todas las recetas
-          </button>
+            Anterior
+          </Button>
+          
+          <span className="px-4 py-2 text-sm text-gray-600">
+            Página {meta.current_page} de {meta.last_page}
+          </span>
+          
+          <Button
+            variant="outline"
+            onClick={() => handlePageChange(meta.current_page + 1)}
+            disabled={meta.current_page === meta.last_page}
+          >
+            Siguiente
+          </Button>
         </div>
       )}
     </div>
