@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             'city' => 'La Paz',
             'state' => 'La Paz',
             'email_verified_at' => now(),
+            'accepted_terms_at' => now(),
             'password' => Hash::make('admin123'),
         ]);
         $admin->assignRole('admin');
@@ -180,24 +181,74 @@ class DatabaseSeeder extends Seeder
                 'section_key' => 'hero',
                 'title' => 'Cielo Carnes',
                 'subtitle' => 'Calidad y tradición en cada corte',
-                'content' => 'Desde 1985, ofrecemos los mejores productos cárnicos de Bolivia.',
+                'content' => 'Desde hace más de 20 años, ofrecemos los mejores productos cárnicos de Bolivia. Especialistas en carnes y fiambres de cerdo de la más alta calidad.',
+                'is_published' => true,
             ],
             [
-                'section_key' => 'history',
+                'section_key' => 'historia',
                 'title' => 'Nuestra Historia',
-                'subtitle' => 'Más de 35 años de experiencia',
-                'content' => 'Fundada en 1985 por la familia Cielo, nuestra empresa ha crecido...',
+                'subtitle' => 'Más de 20 años de experiencia familiar',
+                'content' => 'Fundada por la familia Cielo, nuestra empresa comenzó como un pequeño negocio familiar dedicado a la producción artesanal de carnes y fiambres de cerdo. A lo largo de los años, hemos mantenido nuestro compromiso con la calidad y la tradición, utilizando recetas familiares transmitidas de generación en generación.
+
+Hoy en día, somos reconocidos como una de las empresas líderes en el sector cárnico boliviano, sin perder nunca nuestros valores familiares y nuestro compromiso con la excelencia en cada producto que ofrecemos.',
+                'metadata' => ['founded_year' => 2003],
+                'is_published' => true,
             ],
             [
-                'section_key' => 'values',
+                'section_key' => 'valores',
                 'title' => 'Nuestros Valores',
-                'subtitle' => 'Compromiso con la calidad',
-                'content' => 'Calidad, frescura, tradición y servicio al cliente son nuestros pilares.',
+                'subtitle' => 'Los principios que guían nuestro trabajo diario',
+                'content' => 'En Cielo Carnes, nuestros valores son la base de todo lo que hacemos. La calidad premium en cada producto, la tradición familiar que nos distingue, y el servicio excepcional que brindamos a nuestros clientes son los pilares fundamentales de nuestra empresa.',
+                'is_published' => true,
+            ],
+            [
+                'section_key' => 'ubicacion',
+                'title' => 'Nuestra Ubicación',
+                'subtitle' => 'Visítanos en nuestras instalaciones',
+                'content' => 'Nos encontramos estratégicamente ubicados en La Paz, Bolivia, con fácil acceso para nuestros clientes. Nuestras modernas instalaciones cuentan con la más alta tecnología para garantizar la calidad y frescura de nuestros productos.',
+                'metadata' => [
+                    'address' => 'Av. Principal 123, La Paz, Bolivia',
+                    'latitude' => -16.5000,
+                    'longitude' => -68.1193,
+                ],
+                'is_published' => true,
             ],
         ];
 
         foreach ($sections as $section) {
-            CompanyContent::factory()->create($section + ['is_published' => true]);
+            CompanyContent::factory()->create($section);
+        }
+
+        // Crear contenido de galería
+        $galleryItems = [
+            [
+                'section_key' => 'galeria-1',
+                'title' => 'Nuestras Instalaciones',
+                'content' => 'Modernas instalaciones con tecnología de punta',
+                'is_published' => true,
+            ],
+            [
+                'section_key' => 'galeria-2',
+                'title' => 'Productos Frescos',
+                'content' => 'La más alta calidad en cada producto',
+                'is_published' => true,
+            ],
+            [
+                'section_key' => 'galeria-3',
+                'title' => 'Proceso de Producción',
+                'content' => 'Cuidado artesanal en cada etapa',
+                'is_published' => true,
+            ],
+            [
+                'section_key' => 'galeria-4',
+                'title' => 'Equipo de Trabajo',
+                'content' => 'Profesionales comprometidos con la calidad',
+                'is_published' => true,
+            ],
+        ];
+
+        foreach ($galleryItems as $item) {
+            CompanyContent::factory()->create($item);
         }
     }
 
