@@ -1,29 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recetario - Cielo Carnes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-    <div class="min-h-screen">
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center py-4">
-                    <h1 class="text-2xl font-bold text-gray-900">Cielo Carnes - Recetario</h1>
-                    <nav class="space-x-4">
-                        <a href="/" class="text-gray-600 hover:text-gray-900">Inicio</a>
-                        <a href="/nosotros" class="text-gray-600 hover:text-gray-900">Nosotros</a>
-                        <a href="/tienda" class="text-gray-600 hover:text-gray-900">Tienda</a>
-                        <a href="/recetario" class="text-red-600 font-medium">Recetario</a>
-                    </nav>
-                </div>
-            </div>
-        </header>
-
-        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <div class="px-4 py-6 sm:px-0">
+<x-public-layout title="Recetario">
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
                 <h1 class="text-3xl font-bold text-gray-900 mb-8">Recetario de Cielo Carnes</h1>
 
                 <!-- Filtros -->
@@ -151,14 +128,12 @@
                     @endforelse
                 </div>
 
-                <!-- Paginación -->
-                @if($recipes->hasPages())
-                    <div class="mt-8">
-                        {{ $recipes->appends(request()->query())->links() }}
-                    </div>
-                @endif
-            </div>
-        </main>
+            <!-- Paginación -->
+            @if($recipes->hasPages())
+                <div class="mt-8">
+                    {{ $recipes->appends(request()->query())->links() }}
+                </div>
+            @endif
+        </div>
     </div>
-</body>
-</html>
+</x-public-layout>

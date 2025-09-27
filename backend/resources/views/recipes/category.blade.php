@@ -1,4 +1,4 @@
-<x-app-layout title="Recetas {{ $category->name }} - Cielo Carnes">
+<x-public-layout title="Recetas {{ $category->name }}">
     <!-- Hero Section -->
     <section class="bg-gradient-to-r from-orange-600 to-red-600 text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -264,4 +264,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-public-layout>

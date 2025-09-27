@@ -1,4 +1,4 @@
-<x-app-layout title="{{ $recipe->title }} - Recetario Cielo Carnes">
+<x-public-layout title="{{ $recipe->title }} - Recetario">
     <!-- Breadcrumb -->
     <nav class="bg-gray-50 py-3">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -319,4 +319,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-public-layout>

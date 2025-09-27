@@ -1,31 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contacto - Cielo Carnes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</head>
-<body class="bg-gray-100">
-    <div class="min-h-screen">
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center py-4">
-                    <h1 class="text-2xl font-bold text-gray-900">Cielo Carnes - Contacto</h1>
-                    <nav class="space-x-4">
-                        <a href="/" class="text-gray-600 hover:text-gray-900">Inicio</a>
-                        <a href="/nosotros" class="text-gray-600 hover:text-gray-900">Nosotros</a>
-                        <a href="/tienda" class="text-gray-600 hover:text-gray-900">Tienda</a>
-                        <a href="/recetario" class="text-gray-600 hover:text-gray-900">Recetario</a>
-                        <a href="/contacto" class="text-red-600 font-medium">Contacto</a>
-                    </nav>
-                </div>
-            </div>
-        </header>
-
-        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <div class="px-4 py-6 sm:px-0">
+<x-public-layout title="Contacto">
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
                 <!-- Hero Section -->
                 <div class="text-center mb-12">
                     <h1 class="text-4xl font-bold text-gray-900 mb-4">Contáctanos</h1>
@@ -276,21 +251,19 @@
                                                          x-transition:leave-end="opacity-0 transform scale-95"
                                                          class="px-4 pb-3"
                                                          style="display: none;">
-                                                        <div class="text-gray-600">
-                                                            {!! nl2br(e($faq->answer)) !!}
-                                                        </div>
+                                                    <div class="text-gray-600">
+                                                        {!! nl2br(e($faq->answer)) !!}
                                                     </div>
                                                 </div>
-                                            @endforeach
-                                        </div>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+                        @endforeach
                     </div>
-                @endif
-            </div>
-        </main>
+                </div>
+            @endif
+        </div>
     </div>
-</body>
-</html>
+</x-public-layout>

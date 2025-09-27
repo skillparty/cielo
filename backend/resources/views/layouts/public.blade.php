@@ -69,7 +69,7 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="{{ route('about.index') }}" class="flex items-center">
+                    <a href="{{ url('/') }}" class="flex items-center">
                         <img src="/images/logo.png" alt="Cielo Carnes" class="h-10 w-auto" onerror="this.style.display='none'">
                         <span class="ml-2 text-xl font-bold text-red-600">Cielo Carnes</span>
                     </a>
@@ -77,16 +77,20 @@
 
                 <!-- Navigation -->
                 <nav class="hidden md:flex space-x-8">
-                    <a href="{{ route('about.index') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors">
+                    <a href="{{ route('about.index') }}" 
+                       class="{{ request()->routeIs('about.*') ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-700 hover:text-red-600' }} px-3 py-2 text-sm font-medium transition-colors">
                         Nosotros
                     </a>
-                    <a href="{{ route('shop.index') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors">
+                    <a href="{{ route('shop.index') }}" 
+                       class="{{ request()->routeIs('shop.*') ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-700 hover:text-red-600' }} px-3 py-2 text-sm font-medium transition-colors">
                         Tienda
                     </a>
-                    <a href="{{ route('recipes.index') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors">
+                    <a href="{{ route('recipes.index') }}" 
+                       class="{{ request()->routeIs('recipes.*') ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-700 hover:text-red-600' }} px-3 py-2 text-sm font-medium transition-colors">
                         Recetario
                     </a>
-                    <a href="{{ route('contact.index') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors">
+                    <a href="{{ route('contact.index') }}" 
+                       class="{{ request()->routeIs('contact.*') ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-700 hover:text-red-600' }} px-3 py-2 text-sm font-medium transition-colors">
                         Contacto
                     </a>
                 </nav>
@@ -134,12 +138,63 @@
                 </div>
 
                 <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button type="button" class="text-gray-700 hover:text-red-600" x-data="{ open: false }" @click="open = !open">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="md:hidden" x-data="{ open: false }">
+                    <button type="button" class="text-gray-700 hover:text-red-600" @click="open = !open">
+                        <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
+                        <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
                     </button>
+
+                    <!-- Mobile Navigation Menu -->
+                    <div x-show="open" @click.away="open = false" x-transition class="absolute top-16 left-0 right-0 bg-white shadow-lg border-t md:hidden z-50">
+                        <div class="px-4 py-2 space-y-1">
+                            <a href="{{ route('about.index') }}" 
+                               class="{{ request()->routeIs('about.*') ? 'text-red-600 bg-red-50' : 'text-gray-700 hover:text-red-600 hover:bg-gray-50' }} block px-3 py-2 text-base font-medium transition-colors">
+                                Nosotros
+                            </a>
+                            <a href="{{ route('shop.index') }}" 
+                               class="{{ request()->routeIs('shop.*') ? 'text-red-600 bg-red-50' : 'text-gray-700 hover:text-red-600 hover:bg-gray-50' }} block px-3 py-2 text-base font-medium transition-colors">
+                                Tienda
+                            </a>
+                            <a href="{{ route('recipes.index') }}" 
+                               class="{{ request()->routeIs('recipes.*') ? 'text-red-600 bg-red-50' : 'text-gray-700 hover:text-red-600 hover:bg-gray-50' }} block px-3 py-2 text-base font-medium transition-colors">
+                                Recetario
+                            </a>
+                            <a href="{{ route('contact.index') }}" 
+                               class="{{ request()->routeIs('contact.*') ? 'text-red-600 bg-red-50' : 'text-gray-700 hover:text-red-600 hover:bg-gray-50' }} block px-3 py-2 text-base font-medium transition-colors">
+                                Contacto
+                            </a>
+                            
+                            @auth
+                                <div class="border-t border-gray-200 pt-2 mt-2">
+                                    <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50">
+                                        Dashboard
+                                    </a>
+                                    <a href="{{ route('profile.edit') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50">
+                                        Mi Perfil
+                                    </a>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50">
+                                            Cerrar Sesión
+                                        </button>
+                                    </form>
+                                </div>
+                            @else
+                                <div class="border-t border-gray-200 pt-2 mt-2">
+                                    <a href="{{ route('login') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50">
+                                        Iniciar Sesión
+                                    </a>
+                                    <a href="{{ route('register') }}" class="block px-3 py-2 text-base font-medium bg-red-600 text-white hover:bg-red-700 rounded-md mx-3">
+                                        Registrarse
+                                    </a>
+                                </div>
+                            @endauth
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

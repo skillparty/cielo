@@ -6,170 +6,278 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class CheckoutController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        $cart = $this->getCart();
+        $cartItems = Cart::forUser(Auth::id())
+            ->with(['product.media', 'product.category'])
+            ->get();
 
-        if (!$cart || $cart->items->isEmpty()) {
-            return redirect()->route('shop.index')->with('error', 'Tu carrito está vacío.');
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Tu carrito está vacío.');
         }
 
-        $cart->load(['items.product.media', 'items.product.category']);
+        // Verificar disponibilidad de productos
+        $unavailableItems = [];
+        foreach ($cartItems as $item) {
+            if (!$item->product || $item->product->status !== 'active') {
+                $unavailableItems[] = $item->product->name ?? 'Producto eliminado';
+            } elseif ($item->quantity > $item->product->stock_quantity) {
+                $unavailableItems[] = "{$item->product->name} (stock insuficiente)";
+            }
+        }
+
+        if (!empty($unavailableItems)) {
+            return redirect()->route('cart.index')
+                ->with('error', 'Algunos productos no están disponibles: ' . implode(', ', $unavailableItems));
+        }
 
         // Calcular totales
-        $subtotal = $cart->items->sum(function ($item) {
-            return $item->quantity * $item->unit_price;
-        });
+        $subtotal = $cartItems->sum('total');
+        $deliveryFee = $this->calculateDeliveryFee($subtotal);
+        $taxAmount = $this->calculateTax($subtotal);
+        $total = $subtotal + $deliveryFee + $taxAmount;
 
-        $shipping = $this->calculateShipping($cart);
-        $total = $subtotal + $shipping;
-
-        return view('shop.checkout', compact('cart', 'subtotal', 'shipping', 'total'));
+        return view('checkout.index', compact(
+            'cartItems', 
+            'subtotal', 
+            'deliveryFee', 
+            'taxAmount', 
+            'total'
+        ));
     }
 
     public function store(Request $request)
     {
-        $cart = $this->getCart();
-
-        if (!$cart || $cart->items->isEmpty()) {
-            return redirect()->route('shop.index')->with('error', 'Tu carrito está vacío.');
-        }
-
         $request->validate([
-            'payment_method' => 'required|in:card,qr',
-            'shipping_address_line1' => 'required|string|max:255',
-            'shipping_address_line2' => 'nullable|string|max:255',
-            'shipping_city' => 'required|string|max:100',
-            'shipping_state' => 'required|string|max:100',
-            'shipping_postal_code' => 'required|string|max:20',
-            'shipping_phone' => 'required|string|max:20',
-            'notes' => 'nullable|string|max:500',
+            'payment_method' => 'required|in:card,qr,cash_on_delivery',
+            'delivery_address_line1' => 'required|string|max:255',
+            'delivery_address_line2' => 'nullable|string|max:255',
+            'delivery_city' => 'required|string|max:100',
+            'delivery_state' => 'required|string|max:100',
+            'delivery_postal_code' => 'nullable|string|max:20',
+            'delivery_phone' => 'required|string|max:20',
+            'delivery_notes' => 'nullable|string|max:1000',
+            'receipt_image' => 'required_if:payment_method,qr|image|mimes:jpeg,png,jpg|max:5120',
         ]);
 
-        // Verificar stock de todos los productos
-        foreach ($cart->items as $item) {
-            $product = $item->product;
+        $cartItems = Cart::forUser(Auth::id())->with('product')->get();
 
-            if (!$product->is_active) {
-                return back()->with('error', "El producto {$product->name} ya no está disponible.");
-            }
-
-            if (!$product->isInStock() || $product->stock < $item->quantity) {
-                return back()->with('error', "Stock insuficiente para {$product->name}. Disponible: {$product->stock}");
-            }
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Tu carrito está vacío.');
         }
 
-        DB::transaction(function () use ($request, $cart) {
+        try {
+            DB::beginTransaction();
+
+            // Verificar stock nuevamente
+            foreach ($cartItems as $item) {
+                if (!$item->product || $item->product->status !== 'active') {
+                    throw new \Exception("El producto {$item->product->name} ya no está disponible.");
+                }
+                if ($item->quantity > $item->product->stock_quantity) {
+                    throw new \Exception("Stock insuficiente para {$item->product->name}.");
+                }
+            }
+
             // Calcular totales
-            $subtotal = $cart->items->sum(function ($item) {
-                return $item->quantity * $item->unit_price;
-            });
-            $shipping = $this->calculateShipping($cart);
-            $total = $subtotal + $shipping;
+            $subtotal = $cartItems->sum('total');
+            $deliveryFee = $this->calculateDeliveryFee($subtotal);
+            $taxAmount = $this->calculateTax($subtotal);
+            $total = $subtotal + $deliveryFee + $taxAmount;
 
             // Crear la orden
             $order = Order::create([
                 'user_id' => Auth::id(),
-                'order_number' => $this->generateOrderNumber(),
                 'status' => 'pending',
                 'subtotal' => $subtotal,
-                'shipping_cost' => $shipping,
+                'tax_amount' => $taxAmount,
+                'delivery_fee' => $deliveryFee,
                 'total' => $total,
-                'shipping_address_line1' => $request->shipping_address_line1,
-                'shipping_address_line2' => $request->shipping_address_line2,
-                'shipping_city' => $request->shipping_city,
-                'shipping_state' => $request->shipping_state,
-                'shipping_postal_code' => $request->shipping_postal_code,
-                'shipping_phone' => $request->shipping_phone,
-                'notes' => $request->notes,
+                'currency' => 'BOB',
                 'payment_method' => $request->payment_method,
+                'delivery_address_line1' => $request->delivery_address_line1,
+                'delivery_address_line2' => $request->delivery_address_line2,
+                'delivery_city' => $request->delivery_city,
+                'delivery_state' => $request->delivery_state,
+                'delivery_postal_code' => $request->delivery_postal_code,
+                'delivery_phone' => $request->delivery_phone,
+                'delivery_notes' => $request->delivery_notes,
+                'estimated_delivery_at' => $this->calculateEstimatedDelivery(),
             ]);
 
             // Crear items de la orden
-            foreach ($cart->items as $cartItem) {
+            foreach ($cartItems as $cartItem) {
+                $product = $cartItem->product;
+                
                 OrderItem::create([
                     'order_id' => $order->id,
-                    'product_id' => $cartItem->product_id,
-                    'product_name' => $cartItem->product->name,
-                    'product_sku' => $cartItem->product->sku,
+                    'product_id' => $product->id,
                     'quantity' => $cartItem->quantity,
-                    'unit_price' => $cartItem->unit_price,
-                    'total' => $cartItem->quantity * $cartItem->unit_price,
-                    'product_data' => $cartItem->product->toArray(),
+                    'price_at_time' => $cartItem->price_at_time,
+                    'product_snapshot' => [
+                        'name' => $product->name,
+                        'description' => $product->description,
+                        'image' => $product->getFirstMediaUrl('images'),
+                        'category' => $product->category->name ?? null,
+                    ],
                 ]);
 
-                // Reducir stock si aplica
-                if ($cartItem->product->stock > 0) {
-                    $cartItem->product->decrement('stock', $cartItem->quantity);
-                }
+                // Reducir stock
+                $product->decrement('stock_quantity', $cartItem->quantity);
             }
 
-            // Crear registro de pago
-            Payment::create([
+            // Crear el pago
+            $payment = Payment::create([
                 'order_id' => $order->id,
-                'user_id' => Auth::id(),
+                'payment_method' => $request->payment_method,
                 'amount' => $total,
                 'currency' => 'BOB',
-                'payment_method' => $request->payment_method,
-                'status' => 'pending',
-                'reference_number' => $this->generatePaymentReference(),
+                'status' => $request->payment_method === 'cash_on_delivery' ? 'pending' : 'processing',
             ]);
 
+            // Procesar el pago según el método
+            $this->processPayment($payment, $request);
+
             // Limpiar carrito
-            $cart->items()->delete();
-        });
+            Cart::clearForUser(Auth::id());
+            
+            // Enviar notificación
+            $user->notify(new \App\Notifications\OrderPlaced($order));
 
-        return redirect()->route('checkout.success')->with('success', '¡Pedido realizado exitosamente!');
-    }
+            DB::commit();
 
-    public function success()
-    {
-        return view('shop.checkout-success');
-    }
+            return redirect()->route('checkout.success', $order)
+                ->with('success', '¡Pedido realizado exitosamente!');
 
-    private function getCart()
-    {
-        if (Auth::check()) {
-            return Cart::where('user_id', Auth::id())->with('items.product')->first();
-        } else {
-            return Cart::where('session_id', Session::getId())->with('items.product')->first();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error en checkout: ' . $e->getMessage());
+            
+            return back()->withInput()
+                ->with('error', 'Error al procesar el pedido: ' . $e->getMessage());
         }
     }
 
-    private function calculateShipping(Cart $cart)
+    public function success(Order $order)
     {
-        // Lógica simple de envío - se puede hacer más compleja según necesidades
-        $subtotal = $cart->items->sum(function ($item) {
-            return $item->quantity * $item->unit_price;
-        });
+        if ($order->user_id !== Auth::id()) {
+            abort(403);
+        }
 
+        $order->load(['orderItems.product', 'payments']);
+
+        // Verificar si hay pagos completados para mostrar confirmación
+        $payment = $order->payments->where('status', 'completed')->first();
+        if ($payment && $order->status !== 'confirmed') {
+            $order->status = 'confirmed';
+            $order->save();
+            
+            // Notificar confirmación de pago
+            $order->user->notify(new \App\Notifications\PaymentConfirmed($order, $payment));
+        }
+
+        return view('checkout.success', compact('order'));
+    }
+
+    public function uploadReceipt(Request $request, Payment $payment)
+    {
+        $request->validate([
+            'receipt_image' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+        ]);
+
+        if ($payment->order->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        try {
+            $file = $request->file('receipt_image');
+            $filename = 'receipts/' . $payment->id . '_' . time() . '.' . $file->extension();
+            $path = $file->storeAs('public', $filename);
+
+            $payment->update([
+                'receipt_file_path' => $filename,
+                'status' => 'verification_required',
+                'verification_status' => 'pending',
+            ]);
+
+            $payment->order->update(['status' => 'payment_verification']);
+
+            return back()->with('success', 'Comprobante subido exitosamente. Tu pago será verificado pronto.');
+
+        } catch (\Exception $e) {
+            Log::error('Error subiendo comprobante: ' . $e->getMessage());
+            return back()->with('error', 'Error al subir el comprobante.');
+        }
+    }
+
+    private function processPayment(Payment $payment, Request $request)
+    {
+        switch ($payment->payment_method) {
+            case 'qr':
+                if ($request->hasFile('receipt_image')) {
+                    $file = $request->file('receipt_image');
+                    $filename = 'receipts/' . $payment->id . '_' . time() . '.' . $file->extension();
+                    $path = $file->storeAs('public', $filename);
+
+                    $payment->update([
+                        'receipt_file_path' => $filename,
+                        'status' => 'verification_required',
+                        'verification_status' => 'pending',
+                    ]);
+
+                    $payment->order->update(['status' => 'payment_verification']);
+                } else {
+                    $payment->order->update(['status' => 'payment_pending']);
+                }
+                break;
+
+            case 'card':
+                // Aquí se integraría con la pasarela de pago
+                $payment->update(['status' => 'pending']);
+                $payment->order->update(['status' => 'payment_pending']);
+                break;
+
+            case 'cash_on_delivery':
+                $payment->update(['status' => 'pending']);
+                $payment->order->update(['status' => 'preparing']);
+                break;
+        }
+    }
+
+    private function calculateDeliveryFee(float $subtotal): float
+    {
         // Envío gratis para pedidos mayores a 200 BOB
         if ($subtotal >= 200) {
             return 0;
         }
 
-        // Envío fijo de 15 BOB para pedidos menores
-        return 15;
+        // Envío fijo de 25 BOB para pedidos menores
+        return 25;
     }
 
-    private function generateOrderNumber()
+    private function calculateTax(float $subtotal): float
     {
-        do {
-            $number = 'ORD-' . date('Y') . '-' . str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
-        } while (Order::where('order_number', $number)->exists());
-
-        return $number;
+        // Sin impuestos por ahora, pero se puede implementar
+        return 0;
     }
 
-    private function generatePaymentReference()
+    private function calculateEstimatedDelivery()
     {
-        return 'PAY-' . time() . '-' . mt_rand(1000, 9999);
+        // Estimación de entrega: 2-3 días hábiles
+        return now()->addWeekdays(2);
     }
 }
