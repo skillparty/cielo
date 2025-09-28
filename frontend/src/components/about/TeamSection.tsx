@@ -27,35 +27,35 @@ const team = [
 
 export default function TeamSection() {
   return (
-    <section className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+    <section className="py-12 sm:py-16 bg-white w-full">
+      <div className="w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-neutral-900 mb-3 sm:mb-4">
             Nuestro Equipo
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-neutral-600 max-w-2xl mx-auto px-4">
             Conoce a las personas apasionadas que hacen posible la excelencia de Cielo Carnes
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {team.map((member, index) => (
             <div key={index} className="text-center group">
               {/* Photo */}
-              <div className="relative w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full bg-gradient-to-br from-red-100 to-red-200">
+              <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 overflow-hidden rounded-full bg-gradient-to-br from-primary-100 to-secondary-100">
                 <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-4xl">👤</span>
+                  <span className="text-2xl sm:text-3xl md:text-4xl">👤</span>
                 </div>
               </div>
 
               {/* Info */}
-              <h3 className="text-xl font-semibold text-gray-900 mb-1">
+              <h3 className="text-lg sm:text-xl font-semibold text-neutral-900 mb-1">
                 {member.name}
               </h3>
-              <p className="text-red-600 font-medium mb-3">
+              <p className="text-primary-700 font-medium mb-2 sm:mb-3 text-sm sm:text-base">
                 {member.role}
               </p>
-              <p className="text-gray-600 text-sm leading-relaxed">
+              <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed">
                 {member.description}
               </p>
             </div>
@@ -63,16 +63,16 @@ export default function TeamSection() {
         </div>
 
         {/* Call to Action */}
-        <div className="mt-16 text-center">
-          <div className="bg-gradient-to-r from-red-600 to-red-800 rounded-2xl p-8 text-white">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">
+        <div className="mt-12 sm:mt-16 text-center">
+          <div className="bg-gradient-to-r from-primary-700 to-primary-900 rounded-2xl p-6 sm:p-8 text-white">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-display font-bold mb-3 sm:mb-4">
               ¿Quieres formar parte de nuestro equipo?
             </h3>
-            <p className="text-red-100 mb-6 max-w-2xl mx-auto">
+            <p className="text-primary-100 mb-4 sm:mb-6 max-w-2xl mx-auto text-sm sm:text-base px-4">
               Siempre estamos buscando personas apasionadas que compartan nuestros valores 
               de calidad y excelencia en el servicio.
             </p>
-            <button className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            <button className="bg-white text-primary-700 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-neutral-100 transition-colors text-sm sm:text-base">
               Ver Oportunidades
             </button>
           </div>

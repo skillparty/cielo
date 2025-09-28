@@ -63,22 +63,25 @@ export default function Header() {
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-primary-900 text-white py-2 hidden md:block">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-primary-900 text-white py-2 hidden lg:block w-full">
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
           <div className="flex justify-between items-center text-sm">
-            <div className="flex items-center space-x-6">
-              <a href="tel:+59170123456" className="flex items-center hover:text-secondary-400 transition-colors">
+            <div className="flex items-center space-x-4 xl:space-x-6">
+              <a href="tel:+59169420542" className="flex items-center hover:text-secondary-400 transition-colors">
                 <Phone className="w-4 h-4 mr-1" />
-                +591 70123456
+                <span className="hidden xl:inline">+591 69420542</span>
+                <span className="xl:hidden">69420542</span>
               </a>
               <div className="flex items-center">
                 <MapPin className="w-4 h-4 mr-1" />
-                Av. Siempre Viva 123, Santa Cruz
+                <span className="hidden xl:inline">Av. Siempre Viva 123, Santa Cruz</span>
+                <span className="xl:hidden">Santa Cruz</span>
               </div>
             </div>
             <div className="flex items-center">
               <Clock className="w-4 h-4 mr-1" />
-              Lun-Sab: 8:00 - 20:00 | Dom: 9:00 - 14:00
+              <span className="hidden xl:inline">Lun-Sab: 8:00 - 20:00 | Dom: 9:00 - 14:00</span>
+              <span className="xl:hidden">8:00 - 20:00</span>
             </div>
           </div>
         </div>
@@ -86,15 +89,15 @@ export default function Header() {
 
       {/* Main Header */}
       <header className={cn(
-        "bg-white sticky top-0 z-50 transition-all duration-300",
+        "bg-white sticky top-0 z-50 transition-all duration-300 w-full",
         scrolled ? "shadow-medium" : "shadow-soft"
       )}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+        <div className="w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16">
+          <div className="flex justify-between items-center h-16 sm:h-18 md:h-20">
             {/* Logo */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center group">
-                <div className="relative w-16 h-16 mr-3 transition-transform group-hover:scale-105">
+                <div className="relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mr-2 sm:mr-3 transition-transform group-hover:scale-105">
                   <Image
                     src="/logo.png"
                     alt="Cielo Carnes"
@@ -104,8 +107,8 @@ export default function Header() {
                   />
                 </div>
                 <div className="hidden sm:block">
-                  <h1 className="text-2xl font-display font-bold text-primary-700">Cielo Carnes</h1>
-                  <p className="text-xs text-neutral-600">Tradición y Calidad desde 2003</p>
+                  <h1 className="text-lg sm:text-xl md:text-2xl font-display font-bold text-primary-700">Cielo Carnes</h1>
+                  <p className="text-xs text-neutral-600 hidden md:block">Tradición y Calidad desde 2003</p>
                 </div>
               </Link>
             </div>
@@ -154,31 +157,31 @@ export default function Header() {
             </nav>
 
             {/* Right Actions */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 sm:space-x-3">
               {/* Search Button */}
               <button
                 onClick={() => setSearchOpen(!searchOpen)}
-                className="p-2 text-neutral-600 hover:text-primary-700 transition-colors"
+                className="p-1.5 sm:p-2 text-neutral-600 hover:text-primary-700 transition-colors"
               >
-                <Search className="h-5 w-5" />
+                <Search className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
 
               {/* User Account */}
               <Link
                 href="/account"
-                className="p-2 text-neutral-600 hover:text-primary-700 transition-colors hidden md:block"
+                className="p-1.5 sm:p-2 text-neutral-600 hover:text-primary-700 transition-colors hidden sm:block"
               >
-                <User className="h-5 w-5" />
+                <User className="h-4 w-4 sm:h-5 sm:w-5" />
               </Link>
 
               {/* Cart */}
               <Link
                 href="/cart"
-                className="relative p-2 text-neutral-600 hover:text-primary-700 transition-colors"
+                className="relative p-1.5 sm:p-2 text-neutral-600 hover:text-primary-700 transition-colors"
               >
-                <ShoppingCart className="h-5 w-5" />
+                <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
                 {cartItemsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-primary-700 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
+                  <span className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 bg-primary-700 text-white text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center font-semibold">
                     {cartItemsCount > 99 ? '99+' : cartItemsCount}
                   </span>
                 )}
@@ -187,12 +190,12 @@ export default function Header() {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 text-neutral-600 hover:text-primary-700 transition-colors"
+                className="lg:hidden p-1.5 sm:p-2 text-neutral-600 hover:text-primary-700 transition-colors"
               >
                 {mobileMenuOpen ? (
-                  <X className="h-6 w-6" />
+                  <X className="h-5 w-5 sm:h-6 sm:w-6" />
                 ) : (
-                  <Menu className="h-6 w-6" />
+                  <Menu className="h-5 w-5 sm:h-6 sm:w-6" />
                 )}
               </button>
             </div>
@@ -201,17 +204,17 @@ export default function Header() {
 
         {/* Search Bar */}
         {searchOpen && (
-          <div className="border-t border-neutral-200 bg-white animate-slide-down">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="border-t border-neutral-200 bg-white animate-slide-down w-full">
+            <div className="w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 py-3 sm:py-4">
               <div className="relative">
                 <input
                   type="text"
                   placeholder="Buscar productos, recetas..."
-                  className="w-full px-4 py-2 pr-10 border border-neutral-300 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+                  className="w-full px-3 sm:px-4 py-2 pr-8 sm:pr-10 text-sm sm:text-base border border-neutral-300 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
                   autoFocus
                 />
                 <button className="absolute right-2 top-1/2 -translate-y-1/2 text-primary-700">
-                  <Search className="h-5 w-5" />
+                  <Search className="h-4 w-4 sm:h-5 sm:w-5" />
                 </button>
               </div>
             </div>
@@ -221,7 +224,7 @@ export default function Header() {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="lg:hidden border-t border-neutral-200 bg-white animate-slide-down">
-            <div className="px-4 py-4 space-y-1">
+            <div className="px-3 sm:px-4 py-3 sm:py-4 space-y-1">
               {navigation.map((item) => (
                 <div key={item.name}>
                   <Link

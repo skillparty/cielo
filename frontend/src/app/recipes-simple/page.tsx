@@ -34,30 +34,30 @@ export default function RecipesSimplePage() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-red-600 to-red-800 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
+      <section className="bg-gradient-to-r from-primary-700 to-primary-900 text-white py-16 sm:py-20 w-full">
+        <div className="w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4 sm:mb-6 leading-tight">
             Recetas Deliciosas
           </h1>
-          <p className="text-xl md:text-2xl text-red-100 max-w-3xl mx-auto mb-8">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-primary-100 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed">
             Descubre recetas increíbles usando nuestros productos premium. 
             Desde platos tradicionales hasta creaciones modernas.
           </p>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 sm:py-12">
         {/* Simple Search */}
-        <div className="mb-8">
-          <div className="flex gap-4 mb-4">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4">
             <input
               type="text"
               placeholder="Buscar recetas..."
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              className="flex-1 px-3 sm:px-4 py-2 text-sm sm:text-base border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               onChange={(e) => setFilters({ ...filters, search: e.target.value })}
             />
             <select
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              className="px-3 sm:px-4 py-2 text-sm sm:text-base border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               onChange={(e) => setFilters({ ...filters, difficulty: e.target.value ? parseInt(e.target.value) : undefined })}
             >
               <option value="">Todas las dificultades</option>
@@ -70,27 +70,27 @@ export default function RecipesSimplePage() {
 
         {/* Loading State */}
         {loading && (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Cargando recetas...</p>
+          <div className="text-center py-8 sm:py-12">
+            <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-primary-700 mx-auto mb-3 sm:mb-4"></div>
+            <p className="text-sm sm:text-base text-neutral-600">Cargando recetas...</p>
           </div>
         )}
 
         {/* Error State */}
         {error && (
-          <div className="text-center py-12">
-            <p className="text-red-600">{error}</p>
+          <div className="text-center py-8 sm:py-12">
+            <p className="text-sm sm:text-base text-error">{error}</p>
           </div>
         )}
 
         {/* Empty State */}
         {!loading && !error && recipes.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">🍽️</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          <div className="text-center py-8 sm:py-12">
+            <div className="text-4xl sm:text-5xl md:text-6xl mb-3 sm:mb-4">🍽️</div>
+            <h3 className="text-lg sm:text-xl font-semibold text-neutral-900 mb-2">
               No se encontraron recetas
             </h3>
-            <p className="text-gray-600">
+            <p className="text-sm sm:text-base text-neutral-600">
               Intenta ajustar los filtros de búsqueda
             </p>
           </div>
@@ -99,13 +99,13 @@ export default function RecipesSimplePage() {
         {/* Recipes Grid */}
         {!loading && !error && recipes.length > 0 && (
           <div>
-            <div className="flex justify-between items-center mb-6">
-              <p className="text-gray-600">
+            <div className="flex justify-between items-center mb-4 sm:mb-6">
+              <p className="text-sm sm:text-base text-neutral-600">
                 Mostrando {recipes.length} de {meta.total} recetas
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
               {recipes.map((recipe) => (
                 <Card key={recipe.id} className="group hover:shadow-lg transition-shadow duration-300">
                   <CardContent className="p-0">
@@ -117,7 +117,7 @@ export default function RecipesSimplePage() {
                       
                       {/* Difficulty Badge */}
                       <div className="absolute top-3 left-3">
-                        <span className={`text-xs px-2 py-1 rounded-full ${getDifficultyColor(recipe.difficulty_level)}`}>
+                        <span className={`text-xs px-2 py-1 rounded-full font-medium ${getDifficultyColor(recipe.difficulty_level)}`}>
                           {getDifficultyLabel(recipe.difficulty_level)}
                         </span>
                       </div>
@@ -125,7 +125,7 @@ export default function RecipesSimplePage() {
                       {/* Category Badge */}
                       {recipe.category && (
                         <div className="absolute top-3 right-3">
-                          <span className="bg-red-600 text-white text-xs px-2 py-1 rounded-full">
+                          <span className="bg-primary-700 text-white text-xs px-2 py-1 rounded-full font-medium">
                             {recipe.category.name}
                           </span>
                         </div>
@@ -133,39 +133,40 @@ export default function RecipesSimplePage() {
                     </div>
 
                     {/* Recipe Info */}
-                    <div className="p-4">
-                      <h3 className="font-semibold text-lg text-gray-900 mb-2 group-hover:text-red-600 transition-colors">
+                    <div className="p-3 sm:p-4">
+                      <h3 className="font-semibold text-base sm:text-lg text-neutral-900 mb-2 group-hover:text-primary-700 transition-colors">
                         {recipe.title}
                       </h3>
                       {recipe.subtitle && (
-                        <p className="text-sm text-gray-500 mb-2">{recipe.subtitle}</p>
+                        <p className="text-xs sm:text-sm text-neutral-500 mb-2">{recipe.subtitle}</p>
                       )}
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                      <p className="text-neutral-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
                         {recipe.summary}
                       </p>
 
                       {/* Recipe Stats */}
-                      <div className="flex items-center justify-between text-sm text-gray-500">
+                      <div className="flex items-center justify-between text-xs sm:text-sm text-neutral-500">
                         <div className="flex items-center">
-                          <ClockIcon className="h-4 w-4 mr-1" />
+                          <ClockIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                           <span>{recipe.prep_time_minutes + recipe.cook_time_minutes} min</span>
                         </div>
                         <div className="flex items-center">
-                          <UserGroupIcon className="h-4 w-4 mr-1" />
+                          <UserGroupIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                           <span>{recipe.servings} porciones</span>
                         </div>
                       </div>
                     </div>
                   </CardContent>
 
-                  <CardFooter className="p-4 pt-0">
+                  <CardFooter className="p-3 sm:p-4 pt-0">
                     <Button 
                       variant="outline" 
-                      className="w-full"
+                      className="w-full text-xs sm:text-sm"
                       asChild
                     >
                       <Link href={`/recipes-simple/${recipe.id}`}>
-                        Ver Receta Completa
+                        <span className="hidden sm:inline">Ver Receta Completa</span>
+                        <span className="sm:hidden">Ver Receta</span>
                       </Link>
                     </Button>
                   </CardFooter>

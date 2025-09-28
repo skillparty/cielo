@@ -45,18 +45,18 @@ export default function FeaturedProducts() {
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
             Productos Destacados
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
             Descubre nuestra selección de carnes y fiambres premium, 
             cuidadosamente seleccionados por su calidad excepcional.
           </p>
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12">
           {products.map((product) => (
             <Card key={product.id} className="group hover:shadow-lg transition-shadow duration-300">
               <CardContent className="p-0">
@@ -80,41 +80,42 @@ export default function FeaturedProducts() {
                 </div>
 
                 {/* Product Info */}
-                <div className="p-4">
-                  <h3 className="font-semibold text-lg text-gray-900 mb-2 group-hover:text-red-600 transition-colors">
+                <div className="p-3 sm:p-4">
+                  <h3 className="font-semibold text-base sm:text-lg text-gray-900 mb-2 group-hover:text-red-600 transition-colors">
                     {product.name}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                  <p className="text-gray-600 text-xs sm:text-sm mb-3 line-clamp-2">
                     {product.description}
                   </p>
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-red-600">
+                    <span className="text-lg sm:text-xl md:text-2xl font-bold text-red-600">
                       {formatPrice(product.base_price)}
                     </span>
-                    <span className="text-sm text-gray-500">por {product.unit_type || 'kg'}</span>
+                    <span className="text-xs sm:text-sm text-gray-500">por {product.unit_type || 'kg'}</span>
                   </div>
                 </div>
               </CardContent>
 
-              <CardFooter className="p-4 pt-0">
+              <CardFooter className="p-3 sm:p-4 pt-0">
                 <div className="flex gap-2 w-full">
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="flex-1"
+                    className="flex-1 text-xs sm:text-sm"
                     asChild
                   >
                     <Link href={`/shop/${product.id}`}>
-                      Ver Detalles
+                      <span className="hidden sm:inline">Ver Detalles</span>
+                      <span className="sm:hidden">Ver</span>
                     </Link>
                   </Button>
                   <Button 
                     size="sm" 
-                    className="px-3"
+                    className="px-2 sm:px-3 touch-target"
                     onClick={() => handleAddToCart(product.id)}
                     disabled={product.stock <= 0}
                   >
-                    <ShoppingCartIcon className="h-4 w-4" />
+                    <ShoppingCartIcon className="h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>
                 </div>
               </CardFooter>

@@ -1,0 +1,268 @@
+/* Responsive Design Enhancements for Cielo Carnes */
+
+/* Full width layout fixes */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Ensure all sections use full width */
+section {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Container width optimization */
+.container-full {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-full {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-full {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-full {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container-full {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+/* Extra small devices (phones, 320px and up) */
+@media (max-width: 374px) {
+  .hero-title-xs {
+    font-size: 1.75rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  .hero-text-xs {
+    font-size: 0.875rem !important;
+  }
+  
+  .btn-xs {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.75rem !important;
+  }
+  
+  .container-xs {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .grid-responsive-sm {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid-responsive-md {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .tablet-text-adjust {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+}
+
+/* Large devices (desktops, 1024px and up) */
+@media (min-width: 1024px) {
+  .grid-responsive-lg {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .hover-effects {
+    transform: none !important;
+  }
+  
+  .hover-effects:active {
+    transform: scale(0.95) !important;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .high-dpi-text {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Landscape orientation on mobile */
+@media (orientation: landscape) and (max-height: 500px) {
+  .hero-landscape {
+    height: 400px !important;
+  }
+  
+  .hero-content-landscape {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-friendly {
+    background: white !important;
+    color: black !important;
+  }
+}
+
+/* Accessibility - Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-slide-down,
+  .transition-all,
+  .transition-colors,
+  .transition-transform {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .hover\:scale-105:hover {
+    transform: none !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .auto-dark {
+    background-color: #1f2937;
+    color: #f9fafb;
+  }
+}
+
+/* Container queries for modern browsers */
+@container (max-width: 400px) {
+  .container-query-sm {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+}
+
+/* Focus visible for better accessibility */
+.focus-visible:focus-visible {
+  outline: 2px solid #8B2635;
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better text rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Improved button touch targets */
+button, 
+.btn,
+[role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Better form controls on mobile */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+  font-size: 16px; /* Prevents zoom on iOS */
+}
+
+@media (max-width: 767px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Safari specific fixes */
+@supports (-webkit-appearance: none) {
+  body {
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
+/* Chrome specific fixes */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  body {
+    width: 100vw;
+    overflow-x: hidden;
+  }
+}
+
+/* Prevent horizontal scroll */
+.no-scroll-x {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Full viewport width utility */
+.w-screen {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+/* Fix for mobile viewport issues */
+@media (max-width: 768px) {
+  .mobile-full-width {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}

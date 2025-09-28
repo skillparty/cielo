@@ -74,21 +74,21 @@ export default function ShopPage() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-700 to-primary-900 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+      <section className="bg-gradient-to-r from-primary-700 to-primary-900 py-12 sm:py-16 w-full">
+        <div className="w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-3 sm:mb-4 leading-tight">
             Nuestra Tienda
           </h1>
-          <p className="text-xl text-primary-100 max-w-2xl">
+          <p className="text-base sm:text-lg md:text-xl text-primary-100 max-w-2xl">
             Explora nuestra selección premium de carnes frescas, fiambres y productos especiales
           </p>
         </div>
       </section>
 
       {/* Search and Controls Bar */}
-      <div className="bg-white border-b border-neutral-200 sticky top-20 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col sm:flex-row gap-4">
+      <div className="bg-white border-b border-neutral-200 sticky top-20 z-40 w-full">
+        <div className="w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 py-3 sm:py-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             {/* Search */}
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400" />
@@ -113,7 +113,7 @@ export default function ShopPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+              className="px-3 sm:px-4 py-2 text-sm sm:text-base border border-neutral-300 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
             >
               <option value="featured">Destacados</option>
               <option value="name">Nombre A-Z</option>
@@ -148,21 +148,21 @@ export default function ShopPage() {
             {/* Mobile Filters Toggle */}
             <button
               onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-              className="lg:hidden flex items-center gap-2 px-4 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-600 transition-colors"
+              className="lg:hidden flex items-center gap-2 px-3 sm:px-4 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-600 transition-colors text-sm sm:text-base"
             >
-              <SlidersHorizontal className="h-5 w-5" />
+              <SlidersHorizontal className="h-4 w-4 sm:h-5 sm:w-5" />
               Filtros
             </button>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex gap-8">
+      <div className="w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 py-6 sm:py-8">
+        <div className="flex gap-6 lg:gap-8">
           {/* Filters Sidebar */}
           <aside className={`${
             mobileFiltersOpen ? 'fixed inset-0 z-50 bg-white' : 'hidden'
-          } lg:block lg:relative lg:w-64 flex-shrink-0`}>
+          } lg:block lg:relative lg:w-56 xl:w-64 flex-shrink-0`}>
             <div className="lg:sticky lg:top-32 space-y-6">
               {/* Mobile Filter Header */}
               {mobileFiltersOpen && (
@@ -316,7 +316,7 @@ export default function ShopPage() {
                 </button>
               </div>
             ) : viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 {filteredProducts.map((product) => (
                   <div key={product.id} className="group bg-white rounded-xl shadow-soft hover:shadow-strong transition-all">
                     {/* Product Image */}
@@ -337,14 +337,14 @@ export default function ShopPage() {
                     </div>
 
                     {/* Product Info */}
-                    <div className="p-6">
+                    <div className="p-4 sm:p-6">
                       <div className="mb-2">
-                        <p className="text-sm text-neutral-500">{categories.find(c => c.id === product.category_id)?.name}</p>
+                        <p className="text-xs sm:text-sm text-neutral-500">{categories.find(c => c.id === product.category_id)?.name}</p>
                       </div>
-                      <h3 className="text-xl font-semibold text-neutral-900 mb-2 group-hover:text-primary-700 transition-colors">
+                      <h3 className="text-lg sm:text-xl font-semibold text-neutral-900 mb-2 group-hover:text-primary-700 transition-colors">
                         {product.name}
                       </h3>
-                      <p className="text-neutral-600 text-sm mb-4 line-clamp-2">
+                      <p className="text-neutral-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
                         {product.description}
                       </p>
                       
@@ -361,13 +361,13 @@ export default function ShopPage() {
                       {/* Price and Action */}
                       <div className="flex items-center justify-between">
                         <div>
-                          <span className="text-2xl font-bold text-primary-700">Bs. {product.price}</span>
+                          <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary-700">Bs. {product.price}</span>
                           {product.unit && (
-                            <span className="text-sm text-neutral-500 ml-1">/{product.unit}</span>
+                            <span className="text-xs sm:text-sm text-neutral-500 ml-1">/{product.unit}</span>
                           )}
                         </div>
-                        <button className="p-2 bg-primary-700 text-white rounded-lg hover:bg-primary-600 transition-colors">
-                          <ShoppingCart className="h-5 w-5" />
+                        <button className="p-1.5 sm:p-2 bg-primary-700 text-white rounded-lg hover:bg-primary-600 transition-colors">
+                          <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
                         </button>
                       </div>
                     </div>
