@@ -389,38 +389,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Sucursal Cruce Taquiña */}
-            <div className="group bg-white rounded-xl shadow-soft hover:shadow-strong transition-all duration-300 overflow-hidden">
-              <div className="relative h-48 sm:h-56">
-                <Image
-                  src="/ubiDos.jpg"
-                  alt="Sucursal Cruce Taquiña - Cielo Carnes"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-white font-semibold text-lg mb-1 drop-shadow-md">
-                    Sucursal Cruce Taquiña
-                  </h3>
-                </div>
-              </div>
-              <div className="p-4 sm:p-6">
-                <p className="text-neutral-600 text-sm sm:text-base mb-4 leading-relaxed">
-                  Av. Simon Lopez, media cuadra antes del cruce
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center text-primary-700">
-                    <Phone className="h-4 w-4 mr-2" />
-                    <span className="text-sm font-medium">69420542</span>
-                  </div>
-                  <button className="text-primary-700 hover:text-primary-600 transition-colors text-sm font-medium">
-                    Ver Mapa
-                  </button>
-                </div>
-              </div>
-            </div>
-
             {/* Sucursal Ingavi */}
             <div className="group bg-white rounded-xl shadow-soft hover:shadow-strong transition-all duration-300 overflow-hidden">
               <div className="relative h-48 sm:h-56">

@@ -79,3 +79,44 @@ body {
 .animate-fade-in {
   animation: fadeIn 0.6s ease-out;
 }
+
+@keyframes cloudDrift {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(100vw) translateY(-3px);
+  }
+}
+
+.animate-cloud-drift-1 {
+  animation: cloudDrift 60s linear infinite;
+}
+
+.animate-cloud-drift-2 {
+  animation: cloudDrift 70s linear infinite;
+}
+
+.animate-cloud-drift-3 {
+  animation: cloudDrift 65s linear infinite;
+}
+
+.animate-cloud-drift-4 {
+  animation: cloudDrift 55s linear infinite;
+}
+
+.animate-cloud-drift-5 {
+  animation: cloudDrift 75s linear infinite;
+}
+
+.animate-cloud-drift-6 {
+  animation: cloudDrift 62s linear infinite;
+}
+
+.animate-cloud-drift-7 {
+  animation: cloudDrift 68s linear infinite;
+}
+
+.animate-cloud-drift-8 {
+  animation: cloudDrift 58s linear infinite;
+}
