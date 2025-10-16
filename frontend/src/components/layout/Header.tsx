@@ -122,7 +122,7 @@ export default function Header() {
           </svg>
         </div>
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center h-20 lg:h-24">
+          <div className="flex items-center h-20 lg:h-24">
             {/* Logo - Enhanced */}
             <Link href="/" className="flex items-center space-x-3 lg:space-x-4 group relative z-10">
               <div className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-white to-neutral-50 shadow-xl overflow-hidden transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl group-hover:rotate-6">
@@ -142,7 +142,7 @@ export default function Header() {
             </Link>
 
             {/* Navigation with Cloud Buttons */}
-            <nav className="hidden lg:flex items-center justify-center flex-1 gap-16">
+            <nav className="hidden lg:flex items-center justify-center gap-16 flex-1">
               {navigation.map((item) => (
                 <div key={item.name} className="relative group">
                   <Link
@@ -229,7 +229,7 @@ export default function Header() {
             </nav>
 
             {/* Actions - Enhanced */}
-            <div className="flex items-center space-x-4 lg:space-x-5 relative z-10">
+            <div className="flex items-center space-x-3 lg:space-x-4 relative z-10">
               <button
                 onClick={() => setSearchOpen(!searchOpen)}
                 className="p-2.5 lg:p-3 text-white hover:bg-white/25 rounded-xl transition-all duration-300 hover:scale-110 hover:shadow-lg backdrop-blur-sm"

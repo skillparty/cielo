@@ -10,7 +10,8 @@ import {
   Clock,
   Truck,
   Shield,
-  Phone
+  Phone,
+  MapPin
 } from 'lucide-react'
 
 export default function Home() {
@@ -352,17 +353,17 @@ export default function Home() {
               Nuestras Sucursales
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-neutral-600 max-w-2xl mx-auto px-4">
-              Visítanos en cualquiera de nuestras 4 sucursales estratégicamente ubicadas en La Paz
+              Visítanos en cualquiera de nuestras 3 sucursales estratégicamente ubicadas en La Paz
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {/* Sucursal 6 de Agosto */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12">
+            {/* Sucursal 1: 6 de Agosto */}
             <div className="group bg-white rounded-xl shadow-soft hover:shadow-strong transition-all duration-300 overflow-hidden">
               <div className="relative h-48 sm:h-56">
                 <Image
                   src="/ubiUno.jpg"
-                  alt="Sucursal 6 de Agosto - Cielo Carnes"
+                  alt="Sucursal 6 de Agosto"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -382,51 +383,63 @@ export default function Home() {
                     <Phone className="h-4 w-4 mr-2" />
                     <span className="text-sm font-medium">69420542</span>
                   </div>
-                  <button className="text-primary-700 hover:text-primary-600 transition-colors text-sm font-medium">
+                  <Link
+                    href="https://maps.app.goo.gl/2PAXXDFaNFbnWaHJ7"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary-700 hover:text-primary-600 transition-colors text-sm font-medium flex items-center"
+                  >
+                    <MapPin className="h-4 w-4 mr-1" />
                     Ver Mapa
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
 
-            {/* Sucursal Ingavi */}
+            {/* Sucursal 2: Taquiña */}
             <div className="group bg-white rounded-xl shadow-soft hover:shadow-strong transition-all duration-300 overflow-hidden">
               <div className="relative h-48 sm:h-56">
                 <Image
-                  src="/ubiTres.jpg"
-                  alt="Sucursal Ingavi - Cielo Carnes"
+                  src="/ubiDos.jpg"
+                  alt="Sucursal Taquiña"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4">
                   <h3 className="text-white font-semibold text-lg mb-1 drop-shadow-md">
-                    Sucursal Ingavi
+                    Sucursal Taquiña
                   </h3>
                 </div>
               </div>
               <div className="p-4 sm:p-6">
                 <p className="text-neutral-600 text-sm sm:text-base mb-4 leading-relaxed">
-                  Av. Ingavi esq. C. A. Montaño acera Norte
+                  Av. Taquiña esq. Pasaje Coroico
                 </p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center text-primary-700">
                     <Phone className="h-4 w-4 mr-2" />
                     <span className="text-sm font-medium">69420542</span>
                   </div>
-                  <button className="text-primary-700 hover:text-primary-600 transition-colors text-sm font-medium">
+                  <Link
+                    href="https://maps.app.goo.gl/neBc583WGKntXUXz8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary-700 hover:text-primary-600 transition-colors text-sm font-medium flex items-center"
+                  >
+                    <MapPin className="h-4 w-4 mr-1" />
                     Ver Mapa
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
 
-            {/* Sucursal Peru */}
+            {/* Sucursal 3: Peru */}
             <div className="group bg-white rounded-xl shadow-soft hover:shadow-strong transition-all duration-300 overflow-hidden">
               <div className="relative h-48 sm:h-56">
                 <Image
                   src="/ubiCuatro.jpg"
-                  alt="Sucursal Peru - Cielo Carnes"
+                  alt="Sucursal Peru"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -446,9 +459,15 @@ export default function Home() {
                     <Phone className="h-4 w-4 mr-2" />
                     <span className="text-sm font-medium">69420542</span>
                   </div>
-                  <button className="text-primary-700 hover:text-primary-600 transition-colors text-sm font-medium">
+                  <Link
+                    href="https://maps.app.goo.gl/S58N8P7GSerMjqPz8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary-700 hover:text-primary-600 transition-colors text-sm font-medium flex items-center"
+                  >
+                    <MapPin className="h-4 w-4 mr-1" />
                     Ver Mapa
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
